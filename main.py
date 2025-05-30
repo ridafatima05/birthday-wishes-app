@@ -29,9 +29,14 @@ if name and birthdate:
     else:
         st.info(f"✨ Countdown begins, {name}! Just **{days_left} days** to go until your birthday on **{next_birthday.strftime('%B %d')}** — get ready for some serious celebration! 🎂🎉")
 
-    # 🎵 Optional: birthday song
+    # 🎵 Optional: birthday song (local file)
     if st.checkbox("🎵 Play birthday song"):
-        st.audio("https://www2.cs.uic.edu/~i101/SoundFiles/BirthdaySong.mp3", format="audio/mp3")
+        try:
+            with open("birthday_song.mp3", "rb") as audio_file:  # Make sure this file exists in your folder
+                audio_bytes = audio_file.read()
+                st.audio(audio_bytes, format="audio/mp3")
+        except FileNotFoundError:
+            st.error("🎵 The audio file 'birthday_song.mp3' was not found. Please make sure it's in the same directory.")
 
     # 💌 Optional: birthday message
     if st.checkbox("🎁 Show a birthday message"):
@@ -49,7 +54,7 @@ if name and birthdate:
             st.markdown(f"""
             <div style='background-color: #f0fff4; padding: 20px; border-radius: 10px; text-align: center;'>
                 <h2>Dear {name},</h2>
-                 <p>Your birthday is just around the corner! 🎈</p>
+                <p>Your birthday is just around the corner! 🎈</p>
                 <p>Wishing you an early Happy Birthday filled with excitement and happiness. 🎁</p>
             </div>
             """, unsafe_allow_html=True)
